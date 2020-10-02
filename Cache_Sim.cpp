@@ -2,6 +2,7 @@
 #include<cstdlib>
 #include<sstream>
 #include<bits/stdc++.h>
+#include<fstream>
 
 using namespace std;
 
@@ -32,6 +33,14 @@ public:
 struct Fifo_Q{
     Node* FirstOut;
     Node* FirstIn;
+
+    //Structure like a regular waiting line queue,
+    //person to go out is at head, 
+    //to go in, join queue from the tail
+
+    //FirstOut is the head of the Cache block
+    //FirstIn is the tail of the Cache block
+
     Fifo_Q()
     {
         FirstOut =NULL;
@@ -62,7 +71,19 @@ struct Fifo_Q{
         FirstIn -> next = dummy;
         FirstIn = dummy;
     }
-    //In FIFO replacement policy, the Enque operation will
+
+    //Function for reading queue and checking if data already exists
+    bool Readqueue(string value){
+    	Node* dummy = FirstOut;
+    	while (dummy != NULL)
+    		if ((dummy->data).compare(value))
+    			return TRUE;
+    		else
+    			dummy = dummy->next;
+    	return FALSE;
+    		
+    }
+    //In FIFO replacement policy, the Enqueue operation will
     //always be followed by the Dequeue operation whenever the cache limit is full
 };
 
@@ -74,8 +95,17 @@ void LRU(string filename, int CacheLines){
 //Function for executing FIFO Replacement policy
 void FIFO(string filename, int CacheLines){
 
-Fifo_Q Fifo_queue;
+	string line;
 
+	//creating object for FIFO
+	Fifo_Q Fifo_queue;
+
+	ifstream InFile;
+	InFile.open(filename);
+	while(InFile){
+		getline(InFile, line);
+		
+	}
 }
 
 //Function for executing OPTIMAL strategy of cache entry replacement
@@ -87,7 +117,7 @@ void OPTIMAL(string filename, int CacheLines){
 int main(int argc, char* argv[]){
 	
 	string RepPolicy = argv[1];
-	string FileName = argv[2];
+	string InputFileName = argv[2];
 	stringstream Cache_lines(argv[3]);
 	int cl = 0;
 	Cache_lines >> cl;
@@ -98,7 +128,7 @@ int main(int argc, char* argv[]){
 	}
 	else if (RepPolicy.compare("FIFO") == 0)
 	{
-		FIFO(FileName, cl);
+		FIFO(InputFileName, cl);
 	}
 	else if (RepPolicy.compare("OPTIMAL") == 0)
 	{
