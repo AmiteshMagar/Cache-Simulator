@@ -7,11 +7,13 @@ int main(){
 	//fstream fio;
 
 	ifstream infile;
+	ofstream outfile;
 
 	string line="";
 
 	//fio.open("sample.txt", ios::app | ios::in);
 	infile.open("sample.txt");
+	outfile.open("sample.txt");
 
 	cout << "Reading from the file" << endl << endl;
 
@@ -22,7 +24,27 @@ int main(){
 			break;
 	}
 
+	cout << "Writing to the file" << endl;
 	infile.close();
+	line = "";
+
+	while(outfile){
+		getline(cin, line);
+		if(line == "-1")
+			break;
+		outfile << line <<endl;
+	}
+	outfile.close();
+
+	cout << "re-reading from file" <<endl;
+	infile.open("sample.txt");
+	
+	while(infile){
+		getline(infile, line);
+		cout << line;
+		if (infile.eof())
+			break;
+	}
 
 	// ios::in reads a file for reading
 	// ios:: our opens a file for writing into it
