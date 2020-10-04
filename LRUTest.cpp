@@ -37,7 +37,7 @@ public:
 	}
 };
 
-struct Fifo_Q{
+struct LRU_Q{
     Entry* FirstOut;
     Entry* FirstIn;
 
@@ -48,7 +48,7 @@ struct Fifo_Q{
     //FirstOut is the head of the Cache block
     //FirstIn is the tail of the Cache block
 
-    Fifo_Q()
+    LRU_Q()
     {
         FirstOut =NULL;
         FirstIn = NULL;
@@ -95,7 +95,24 @@ struct Fifo_Q{
     	return TRUE; //Value checked and absent, return --> 1
     		
     }
-    //In FIFO replacement policy, the Enqueue operation will
+    void Popqueue(string value){
+
+    	if(FirstOut == NULL || FirstOut->next == NULL)
+    		return;
+
+    	Entry *dummy1 = FirstIn; //tracker
+
+    	if(dummy1 ->data == value)
+    		FirstIn = FirstIn ->next;
+    	Entry *dummy2 = FirstOut;//traverser
+    	while ((dummy2->next) != NULL){
+    		if((dummy2 ->next->data) == value){
+    			dummy2 ->next = dummy2->next->next;
+    		}
+    		dummy2 = dummy2->next;
+    	}
+    }
+    //In LRU replacement policy, the Enqueue operation will
     //always be followed by the Dequeue operation whenever the cache limit is full
 };
 
@@ -136,15 +153,15 @@ struct VictimCache{
     }
 };
 
-void FIFO(string filename, int CacheLines){
+void LRU(string filename, int CacheLines){
 
 	string line;
-	//creating object for FIFO
-	Fifo_Q Fifo_queue;
+	//creating object for LRU
+	LRU_Q LRU_queue;
 	VictimCache vc;
 
 	string sub;
-	string ofName = "19122002_FIFO_";
+	string ofName = "19122002_LRU_";
 	sub = filename;
 	sub.erase((sub.end() - 4),sub.end());
 	ofName.append(sub);
@@ -153,10 +170,11 @@ void FIFO(string filename, int CacheLines){
 	ofName.append(".txt");
 
 	ifstream InFile;
-	ofstream OutFileFIFO;
+	ofstream OutFileLRU;
 
-	OutFileFIFO.open(ofName, ios::out | ios::trunc);
-	OutFileFIFO << endl;
+	OutFileLRU.open(ofName, ios::out | ios::trunc);
+	OutFileLRU << "Due to unknown mechanism, i am unable\nto print stats at the top of the page, please scroll down to the bottom where the stats\nhave been appended"<<endl <<endl;
+
 	InFile.open(filename);
 
 	while(InFile){
@@ -168,51 +186,56 @@ void FIFO(string filename, int CacheLines){
 			if((word !="") && (word != " ")){
 				mastercount++;
 				//Queue codes
-				if (Fifo_queue.Readqueue(word)){ //miss code --Executed only when the cache
+				if (LRU_queue.Readqueue(word)){ //miss code --Executed only when the cache
 					misscount++; 				 // does not hold the value were looking for
 
 					if (CacheLines > 0){
 						//Executed when the cache is not full
-						Fifo_queue.Enqueue(word);
+						OutFileLRU <<"Miss"<<endl;
+						LRU_queue.Enqueue(word);
 						CacheLines--;
 						comp_miss++;
 						vc.Add(word);
-						OutFileFIFO <<"Miss"<<endl;
 
 					}
 					else{
 						//Executed when the cache is full, two types of misses are possible
 						//Compulsary if miss in Victim cache
 						//capacity if hit in Victim cache
-						Fifo_queue.Enqueue(word);
-						Fifo_queue.Dequeue();
+						OutFileLRU <<"Miss"<<endl;
+						LRU_queue.Enqueue(word);
+						LRU_queue.Dequeue();
 						if(vc.Read(word)){
 							vc.Add(word);
 							comp_miss++;
-							OutFileFIFO <<"Miss"<<endl;
 						}
 						else{
+							OutFileLRU <<"Miss"<<endl;
 							capacity_miss++;
-							OutFileFIFO <<"Miss"<<endl;
 						}
 					}
 				}
-				else{
+				else{//LRU Hitcode
+
+					OutFileLRU <<"Hit"<<endl;
+					LRU_queue.Popqueue(word);
+					LRU_queue.Enqueue(word);
+
 					hitcount++;
-					OutFileFIFO <<"Hit"<<endl;
 				}
 			}
 		}while(ss);
 		if(InFile.eof())
 			break;
 	}
-	OutFileFIFO.seekp(0, ios::beg);
-	OutFileFIFO<< "Total Accesses : "<< mastercount<<endl;
-	OutFileFIFO<< "Total Misses : " << misscount << endl;
-	OutFileFIFO<< "Total Hits : "<< hitcount <<endl;
-	OutFileFIFO<< "Compulsary Misses : "<< comp_miss<<endl;
-	OutFileFIFO<< "Capacity Misses : "<< capacity_miss <<endl;
-	OutFileFIFO.close();
+	
+	
+	OutFileLRU<< endl<<"Total Accesses : "<< mastercount<<endl;
+	OutFileLRU<< "Total Misses : " << misscount << endl;
+	OutFileLRU<< "Total Hits : "<< hitcount <<endl;
+	OutFileLRU<< "Compulsary Misses : "<< comp_miss<<endl;
+	OutFileLRU<< "Capacity Misses : "<< capacity_miss <<endl;
+	OutFileLRU.close();
 }
 
 int main(int argc, char* argv[]){
@@ -223,6 +246,6 @@ int main(int argc, char* argv[]){
 	int cl = 0;
 	Cache_lines >> cl;
 
-	FIFO(InputFileName, cl);
+	LRU(InputFileName, cl);
 	return 0;
 }

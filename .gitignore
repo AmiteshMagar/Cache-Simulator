@@ -3,6 +3,7 @@ Sample2.txt
 Sample1.txt
 sample.txt
 19122002_FIFO_Sample1_128.txt
+19122002_FIFO_Sample1_256.txt
 19122002_FIFO_Sample3_8.txt
 19122002_FIFO_Sample2_128.txt
 t3
@@ -14,3 +15,9 @@ VicCac
 trial.cpp
 trial2.cpp
 trial3.cpp
+LRUT
+Sequence1.txt
+AddressTrace_WithoutCache_ing1.txt
+19122002_LRU_AddressTrace_WithoutCache_ing1_18.txt
+19122002_LRU_AddressTrace_WithoutCache_ing1_4.txt
+19122002_LRU_Sequence1_4.txt
