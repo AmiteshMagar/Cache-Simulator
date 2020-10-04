@@ -19,8 +19,8 @@ int main(int argc, char* argv[]){
 			ss >> word;
 			if(word != "" && word !=" "){
 				//Cache Manipulation code goes here
-				
-				cout << word << endl;
+				cout << word << " *" << endl;
+
 			}
 		}while(ss);
 		if(InFile.eof())
