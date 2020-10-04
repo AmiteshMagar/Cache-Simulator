@@ -80,7 +80,7 @@ struct Fifo_Q{
     }
 
     //Function for reading queue and checking if data already exists
-    bool Readqueue(string value){
+    int Readqueue(string value){
 		Entry* dummy = FirstOut;
     	
     	if(FirstOut == NULL) //Empty queue, value absent --> return 1
@@ -156,6 +156,7 @@ void FIFO(string filename, int CacheLines){
 	ofstream OutFile;
 
 	OutFile.open(ofName);
+	OutFile << endl;
 	InFile.open(filename);
 
 	while(InFile){
@@ -205,6 +206,12 @@ void FIFO(string filename, int CacheLines){
 		if(InFile.eof())
 			break;
 	}
+	OutFile.seekp(0, ios::beg);
+	OutFile<< "Total Accesses : "<< mastercount<<endl;
+	OutFile<< "Total Misses : " << misscount << endl;
+	OutFile<< "Total Hits : "<< hitcount <<endl;
+	OutFile<< "Compulsary Misses : "<< comp_miss<<endl;
+	OutFile<< "Capacity Misses : "<< capacity_miss <<endl;
 	OutFile.close();
 }
 
@@ -217,12 +224,5 @@ int main(int argc, char* argv[]){
 	Cache_lines >> cl;
 
 	FIFO(InputFileName, cl);
-
-	cout << mastercount<<endl;
-	cout<< misscount<<endl;
-	cout<<hitcount<< endl;
-	cout << comp_miss<<endl;
-	cout << capacity_miss<<endl;
-
 	return 0;
 }
