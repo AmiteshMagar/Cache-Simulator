@@ -61,6 +61,7 @@ struct LRU_Q{
 
         Entry *dummy = FirstOut;
         FirstOut = FirstOut->next;
+        //free(dummy);
         
         if(FirstOut == NULL)
             FirstIn = NULL;
@@ -102,12 +103,15 @@ struct LRU_Q{
 
     	Entry *dummy1 = FirstIn; //tracker
 
-    	if(dummy1 ->data == value)
+    	if(dummy1 ->data == value){
     		FirstIn = FirstIn ->next;
+            //free(dummy1);
+        }
     	Entry *dummy2 = FirstOut;//traverser
     	while ((dummy2->next) != NULL){
     		if((dummy2 ->next->data) == value){
     			dummy2 ->next = dummy2->next->next;
+                //free(dummy2->next);
     		}
     		dummy2 = dummy2->next;
     	}

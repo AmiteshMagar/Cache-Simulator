@@ -21,3 +21,16 @@ AddressTrace_WithoutCache_ing1.txt
 19122002_LRU_AddressTrace_WithoutCache_ing1_18.txt
 19122002_LRU_AddressTrace_WithoutCache_ing1_4.txt
 19122002_LRU_Sequence1_4.txt
+19122002_CacheEmulation.cpp
+19122002_FIFO_Sample1_128.out
+19122002_LRU_Sample1_128.txt
+19122002_LRU_Sample1_256.txt
+19122002_LRU_Sequence1_128.txt
+19122002_LRU_Sequence1_18.txt
+19122002_OPTIMAL_Sample3_8.txt
+19122002_OPTIMAL_Sequence1_8.txt
+19122002_OPTIMAL_Sequence1_4.txt
+OPTIMALTest.cpp
+OT
+csfinal
+.gitignore
